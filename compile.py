@@ -31,6 +31,9 @@ def main():
     test_case = rj.get_case(sys.argv[-1])
 
     for index, file in enumerate(glob.glob("*.java")):
+
+        if os.stat(file).st_size == 0:
+            continue
         class_name = ""
         tmp_name = "tmp.java"
         test_tmp = "test{}".format(index + 1)
@@ -42,6 +45,8 @@ def main():
 
         run_cmd(["javac", tmp_name])
 
+        print 'run: {}'.format(test_tmp)
+        
         for test in test_case[test_tmp]:
             run_cmd(["java", class_name], test)
 
